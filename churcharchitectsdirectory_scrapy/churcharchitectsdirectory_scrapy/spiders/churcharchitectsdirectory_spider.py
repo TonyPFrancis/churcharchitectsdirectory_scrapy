@@ -56,6 +56,7 @@ class ChurcharchitectsdirectorySpider(Spider):
                 name = firm_text_item[0].strip()
                 address = firm_text_item[1].strip()
                 city = ((firm_text_item[2].strip()).split(',')[0]).strip()
+                state = (((firm_text_item[2].strip()).split(',')[1]).strip().split(' ')[0]).strip()
         else:
             with open('unrecognized.text', 'a+') as ur:
                 ur.write(firm_text[0]+' - '+response_url+'\n')
