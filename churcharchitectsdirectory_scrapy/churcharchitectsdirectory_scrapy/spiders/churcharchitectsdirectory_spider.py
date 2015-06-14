@@ -11,3 +11,13 @@ class ChurcharchitectsdirectorySpider(Spider):
     allowed_domains = ['churcharchitectsdirectory.com']
     TIMEZONE = ''
     BASE_URL = 'http://www.churcharchitectsdirectory.com'
+
+    def __init__(self, name=None, **kwargs):
+        ScrapyFileLogObserver(open("spider.log", 'w'), level=log.INFO).start()
+        ScrapyFileLogObserver(open("spider_error.log", 'w'), level=log.ERROR).start()
+        super(ChurcharchitectsdirectorySpider, self).__init__(name, **kwargs)
+
+    def parse(self, response):
+        sel = Selector(response)
+
+        STATE_XPATH = '//blockquote/p/a/@href'
