@@ -32,10 +32,10 @@ class ChurcharchitectsdirectorySpider(Spider):
             return
 
     def parse_state(self, response):
-        sel = Selector(response)
+        sel = Selector(text=' '.join((response.body).split()))
         response_url = response.url
 
-        FIRM_XPATH = '//td[@rowspan="32"]/blockquote/p'
+        FIRM_XPATH = '//blockquote/p'
 
         firm_items = sel.xpath(FIRM_XPATH)
         if firm_items:
@@ -52,13 +52,16 @@ class ChurcharchitectsdirectorySpider(Spider):
                             website = website[0].strip() if website else ''
                             item['website'] = website
                             try:
-                                self.check_item(item)
+                                #self.check_item(item)
                                 yield item
                             except Exception as e:
-                                with open('dropped.text', 'a+') as ur:
-                                    print "*** DROPPED ITEM - %s"%(item['name'])
+                                with open('dropped.txt', 'a+') as ur:
+                                    print "*** DROPPED ITEM - %s - %s"%(str(e), item['name'])
                                     ur.write(item['name']+' - '+response_url+'\n')
         else:
+            with open('dropped_state.txt', 'a+') as ur:
+                print "*** DROPPED STATE - %s"%(response_url)
+                ur.write(response_url+'\n')
             return
 
     def parse_items(self, firm_text, response_url):
@@ -67,7 +70,9 @@ class ChurcharchitectsdirectorySpider(Spider):
             firm_text_items = [firm_text[4*(x+0):4*(x+1)] for x in range(int(ceil(len(firm_text)/4.0)))]
             for firm_text_item in firm_text_items:
                 name = firm_text_item[0].strip()
+                name = name.replace(',', '.')
                 address = firm_text_item[1].strip()
+                address = address.replace(',', '.')
                 city = ((firm_text_item[2].strip()).split(',')[0]).strip()
                 state = (((firm_text_item[2].strip()).split(',')[1]).strip().split(' ')[0]).strip()
                 zip = (((firm_text_item[2].strip()).split(',')[1]).strip().split(' ')[1]).strip()
@@ -80,7 +85,7 @@ class ChurcharchitectsdirectorySpider(Spider):
                                                            phone = phone)
                 items.append(item)
         else:
-            with open('unrecognized.text', 'a+') as ur:
+            with open('unrecognized.txt', 'a+') as ur:
                 print "*** UNRECOGNIZED ITEMS - %s"%(firm_text[0])
                 ur.write(firm_text[0]+' - '+response_url+'\n')
         return items
