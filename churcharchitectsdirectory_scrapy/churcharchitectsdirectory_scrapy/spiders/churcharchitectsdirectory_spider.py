@@ -4,6 +4,7 @@ from scrapy.log import ScrapyFileLogObserver
 import requests, json, re, urllib
 from time import sleep
 from churcharchitectsdirectory_scrapy.items import ChurcharchitectsdirectoryScrapyItem
+from math import ceil
 
 class ChurcharchitectsdirectorySpider(Spider):
     name = 'churcharchitectsdirectory'
@@ -32,6 +33,7 @@ class ChurcharchitectsdirectorySpider(Spider):
 
     def parse_state(self, response):
         sel = Selector(response)
+        response_url = response.url
 
         FIRM_XPATH = '//td[@rowspan="32"]/blockquote/p'
 
@@ -41,6 +43,14 @@ class ChurcharchitectsdirectorySpider(Spider):
             for firm in firm_items:
                 firm_text = firm.xpath(FIRM_TEXT_XPATH).extract()
                 firm_text = [text.strip() for text in firm_text if text.strip()] if firm_text else []
-
+                if firm_text:
+                    items = self.parse_items(firm_text, response_url)
         else:
             return
+
+    def parse_items(self, firm_text, response_url):
+        if len(firm_text)%4 == 0:
+            firm_text_items = [firm_text[4*(x+0):4*(x+1)] for x in range(int(ceil(len(firm_text)/4.0)))]
+        else:
+            with open('unrecognized.text', 'a+') as ur:
+                ur.write(firm_text[0]+' - '+response_url+'\n')
