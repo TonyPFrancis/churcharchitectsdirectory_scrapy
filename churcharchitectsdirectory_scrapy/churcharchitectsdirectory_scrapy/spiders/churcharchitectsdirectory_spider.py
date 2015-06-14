@@ -31,3 +31,6 @@ class ChurcharchitectsdirectorySpider(Spider):
             return
 
     def parse_state(self, response):
+        sel = Selector(response)
+
+        FIRM_XPATH = '//td[@rowspan="32"]/blockquote/p'
