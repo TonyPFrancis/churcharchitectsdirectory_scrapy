@@ -7,4 +7,7 @@ from churcharchitectsdirectory_scrapy.items import ChurcharchitectsdirectoryScra
 
 class ChurcharchitectsdirectorySpider(Spider):
     name = 'churcharchitectsdirectory'
-    
+    start_urls = ['http://www.churcharchitectsdirectory.com/directory.html', ]
+    allowed_domains = ['churcharchitectsdirectory.com']
+    TIMEZONE = ''
+    BASE_URL = 'http://www.churcharchitectsdirectory.com'
