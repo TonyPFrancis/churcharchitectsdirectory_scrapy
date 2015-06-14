@@ -39,6 +39,8 @@ class ChurcharchitectsdirectorySpider(Spider):
         if firm_items:
             FIRM_TEXT_XPATH = './/text()'
             for firm in firm_items:
+                firm_text = firm.xpath(FIRM_TEXT_XPATH).extract()
+                firm_text = [text.strip() for text in firm_text if text.strip()] if firm_text else []
 
         else:
             return
