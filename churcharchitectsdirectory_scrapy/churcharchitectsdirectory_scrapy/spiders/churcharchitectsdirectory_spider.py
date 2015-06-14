@@ -22,9 +22,12 @@ class ChurcharchitectsdirectorySpider(Spider):
 
         STATE_XPATH = '//blockquote/p/a/@href'
 
-        state_urls = sel.xpath(STATE_XPATH).extract()
+        state_urls = filter(None, sel.xpath(STATE_XPATH).extract())
         if state_urls:
             for state_url in state_urls:
                 state_url = self.BASE_URL+'/'+state_url
+                yield Request(url= state_url, dont_filter=True, callback=self.parse_state)
         else:
             return
+
+    def parse_state(self, response):
