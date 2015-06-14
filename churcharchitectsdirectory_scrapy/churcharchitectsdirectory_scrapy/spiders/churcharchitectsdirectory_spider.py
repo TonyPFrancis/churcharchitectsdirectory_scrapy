@@ -34,3 +34,9 @@ class ChurcharchitectsdirectorySpider(Spider):
         sel = Selector(response)
 
         FIRM_XPATH = '//td[@rowspan="32"]/blockquote/p'
+
+        firm_items = sel.xpath(FIRM_XPATH)
+        if firm_items:
+            
+        else:
+            return
