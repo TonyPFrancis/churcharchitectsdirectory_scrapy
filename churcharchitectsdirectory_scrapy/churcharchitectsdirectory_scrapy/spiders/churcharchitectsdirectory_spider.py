@@ -25,6 +25,6 @@ class ChurcharchitectsdirectorySpider(Spider):
         state_urls = sel.xpath(STATE_XPATH).extract()
         if state_urls:
             for state_url in state_urls:
-
+                state_url = self.BASE_URL+'/'+state_url
         else:
             return
