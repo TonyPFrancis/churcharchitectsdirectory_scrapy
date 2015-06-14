@@ -50,7 +50,10 @@ class ChurcharchitectsdirectorySpider(Spider):
 
     def parse_items(self, firm_text, response_url):
         if len(firm_text)%4 == 0:
+            items = []
             firm_text_items = [firm_text[4*(x+0):4*(x+1)] for x in range(int(ceil(len(firm_text)/4.0)))]
+            for firm_text_item in firm_text_items:
+                name = firm_text_item[0].strip()
         else:
             with open('unrecognized.text', 'a+') as ur:
                 ur.write(firm_text[0]+' - '+response_url+'\n')
