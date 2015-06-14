@@ -21,3 +21,10 @@ class ChurcharchitectsdirectorySpider(Spider):
         sel = Selector(response)
 
         STATE_XPATH = '//blockquote/p/a/@href'
+
+        state_urls = sel.xpath(STATE_XPATH).extract()
+        if state_urls:
+            for state_url in state_urls:
+
+        else:
+            return
