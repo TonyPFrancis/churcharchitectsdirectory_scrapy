@@ -51,6 +51,12 @@ class ChurcharchitectsdirectorySpider(Spider):
                             website = firm.xpath(WEBSITE_XPATH).extract()
                             website = website[0].strip() if website else ''
                             item['website'] = website
+                            try:
+                                self.check_item(item)
+                                yield item
+                            except Exception as e:
+                                with open('dropped.text', 'a+') as ur:
+                                    ur.write(item['name']+' - '+response_url+'\n')
         else:
             return
 
