@@ -56,6 +56,7 @@ class ChurcharchitectsdirectorySpider(Spider):
                                 yield item
                             except Exception as e:
                                 with open('dropped.text', 'a+') as ur:
+                                    print "*** DROPPED ITEM - %s"%(item['name'])
                                     ur.write(item['name']+' - '+response_url+'\n')
         else:
             return
@@ -80,6 +81,7 @@ class ChurcharchitectsdirectorySpider(Spider):
                 items.append(item)
         else:
             with open('unrecognized.text', 'a+') as ur:
+                print "*** UNRECOGNIZED ITEMS - %s"%(firm_text[0])
                 ur.write(firm_text[0]+' - '+response_url+'\n')
         return items
 
