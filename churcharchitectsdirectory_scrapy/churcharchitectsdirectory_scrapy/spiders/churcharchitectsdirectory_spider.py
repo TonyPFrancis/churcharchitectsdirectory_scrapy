@@ -82,3 +82,19 @@ class ChurcharchitectsdirectorySpider(Spider):
             with open('unrecognized.text', 'a+') as ur:
                 ur.write(firm_text[0]+' - '+response_url+'\n')
         return items
+
+    def check_item(self, item):
+        if not item['name']:
+            raise AssertionError('No name')
+        if not item['address']:
+            raise AssertionError('No address')
+        if not item['city']:
+            raise AssertionError('No city')
+        if not item['state']:
+            raise AssertionError('No state')
+        if not item['zip']:
+            raise AssertionError('No zip')
+        if not item['phone']:
+            raise AssertionError('No phone')
+        if not item['website']:
+            raise AssertionError('No website')
