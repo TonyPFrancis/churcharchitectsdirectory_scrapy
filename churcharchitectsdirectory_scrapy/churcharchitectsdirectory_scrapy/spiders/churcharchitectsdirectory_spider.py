@@ -45,6 +45,11 @@ class ChurcharchitectsdirectorySpider(Spider):
                 firm_text = [text.strip() for text in firm_text if text.strip()] if firm_text else []
                 if firm_text:
                     items = self.parse_items(firm_text, response_url)
+                    if items:
+                        for item in items:
+                            WEBSITE_XPATH = 'a[contains(text(),"%s")]/@href'%(item['name'])
+                            
+
         else:
             return
 
